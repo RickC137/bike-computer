@@ -219,7 +219,11 @@ class MainApp(QWidget):
                 distance = geopy.distance.distance(coords1, coords2).km
             else:
                 distance = geopy.distance.distance(coords1, coords2).miles
-            self.total_distance += distance
+
+            dis = (self.speed_val/3600)
+            #self.total_distance += distance # change to use the speed value since this is
+            # more accurate then the lat/lon may change if this turns out to be false
+            self.total_distance += dis
 
         self.total_distance_lbl.setText(str(self.total_distance)[:4])
 
@@ -232,12 +236,12 @@ class MainApp(QWidget):
             if sys_output is not None and sys_output != '':
                 data_strip = sys_output.split(',')
                 self.time_lbl.setText(str(self.set_time_zone(data_strip[0])))
-                speed_val = data_strip[1]
+                self.speed_val = data_strip[1]
                 if self.use_mph:
-                    speed_val = float(speed_val) * 0.62137119223733
-                self.calculate_cur_avg_speed(speed_val)
+                    self.speed_val = float(self.speed_val) * 0.62137119223733
+                self.calculate_cur_avg_speed(self.speed_val)
                 self.avg_speed_lbl.setText(str(self.avg_speed)[:4])
-                self.speed_lbl.setText(str(speed_val)[:4])
+                self.speed_lbl.setText(str(self.speed_val)[:4])
                 self.lat_lbl.setText(str(data_strip[2])[:8])
                 self.lon_lbl.setText(str(data_strip[4])[:8])
                 self.calculate_distance_traveled(data_strip[2], data_strip[4])
