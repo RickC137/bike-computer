@@ -1,5 +1,6 @@
 import serial
 import time
+import os
 
 '''
 Data for neo-6m goes from start gprmc and ends with gpgll
@@ -84,9 +85,7 @@ class GpsParser:
         self.use_test_data = True
         self.running = True
         self.f = open(path+'/test_data/gps_stationary_test_data.txt', 'r')
-        self.write_file = open(path+'/test_data/test_output.txt', 'w')
-        self.program_file = open(path+'/test_data/test_csv_output.txt', 'w')
-        self.beta_test_gps = open(path+'/test_data/test_gps_input.txt', 'w')
+        self.handleFiles()
 
         #DISPLAY=:0 xinput --set-prop 'ADS7846 Touchscreen' 'Coordinate Transformation Matrix' 0 -1 1 1 0 0 0 0 1
         #mport = 'COM4'
@@ -141,6 +140,26 @@ class GpsParser:
                     print(str(self.response))
             except Exception as e:
                 print(e)
+
+    def handleFiles(self):
+        self.renameFiles(path+'/test_data/test_output%s.txt')
+        self.write_file = open(path+'/test_data/test_output0.txt', 'w')
+
+        self.renameFiles(path+'/test_data/test_csv_output%s.txt')
+        self.program_file = open(path+'/test_data/test_csv_output0.txt', 'w')
+
+        self.renameFiles(path+'/test_data/test_gps_input%s.txt')
+        self.beta_test_gps = open(path+'/test_data/test_gps_input0.txt', 'w')
+
+    def renameFiles(self, fileName):
+        i = 0
+        while os.path.exists(fileName % i) and i < 3:
+            i += 1
+
+        for x in range(i):
+            source = str(fileName%x)
+            dest = str(fileName%str(x+1))
+            os.rename(source, dest)
 
 
 

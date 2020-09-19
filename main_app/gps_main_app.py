@@ -169,7 +169,7 @@ class MainApp(QWidget):
         time_font = QFont("Gadget", 15, QFont.Bold)
 
         self.use_mph = True
-        self.program_file = open(path+'/test_data/test_csv_output.txt','r')
+        self.program_file = open(path+'/test_data/test_csv_output0.txt','r')
         self.time_lbl = QLabel("time", self, font=time_font)
         self.speed_lbl = QLabel("0", self, font=speed_font)
         self.avg_speed_lbl = QLabel("0", self, font=speed_font)
